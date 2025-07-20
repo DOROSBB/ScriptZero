@@ -1,16 +1,19 @@
--- Speed Script para Brainrot
--- Hecho para Delta Executor
-
-local speed = 50 -- Cambia el número para más o menos velocidad
-
+-- Speed Script Brainrot (normal, solo cuando caminas)
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 
-while true do
-    task.wait()
-    pcall(function()
-        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-            LocalPlayer.Character.HumanoidRootPart.AssemblyLinearVelocity = LocalPlayer.Character.HumanoidRootPart.CFrame.LookVector * speed
-        end
-    end)
+local speed = 50 -- Puedes cambiarlo a la velocidad que quieras
+
+local function updateSpeed()
+    local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+    local humanoid = char:WaitForChild("Humanoid")
+    humanoid.WalkSpeed = speed
 end
+
+updateSpeed()
+
+-- Cuando reapareces el speed sigue activo
+LocalPlayer.CharacterAdded:Connect(function()
+    task.wait(1)
+    updateSpeed()
+end)
